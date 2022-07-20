@@ -6,7 +6,7 @@ from typing import Dict
 
 import click
 
-from mighty_bedmas_calculator import infix_evaluator
+from mighty_bedmas_calculator.infix_evaluator import evaluate
 
 
 @click.group()
@@ -17,7 +17,7 @@ def cli():
 @click.argument("expression")
 def calculate(expression: str) -> str:
     """List configured settings, optionally filtering by search term."""
-    click.echo(infix_evaluator.evaluate(expression))
+    click.echo(evaluate(expression))
 
 
 if __name__ == "__main__":
