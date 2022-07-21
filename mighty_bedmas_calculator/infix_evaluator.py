@@ -8,8 +8,9 @@ def evaluate(infix_expression: str) -> str:
     return postfix_expression
 
 def __convert_infix_to_postfix(infix_expression: str):
-    if is_operator(infix_expression[-1]):
-        raise ValueError("Equestion cannot end with an operator.")
+    last_character = infix_expression[-1]
+    if is_operator(last_character) and last_character != ")":
+        raise ValueError("Expression cannot end with an operator.")
     
     operators_stack = deque()
     postfix_queue = deque()
@@ -22,8 +23,9 @@ def __convert_infix_to_postfix(infix_expression: str):
             continue
         
         value_is_numeric = value.isdecimal()
+        value_is_an_operator = is_operator(value)
         
-        if not value_is_numeric and not is_operator(value):
+        if not value_is_numeric and not value_is_an_operator:
             raise ValueError(f"{value} in expression is not valid")
         
         if value_is_numeric:
@@ -34,7 +36,8 @@ def __convert_infix_to_postfix(infix_expression: str):
             if previous_value == ")":
                 # Check if it is (2+2)4 which means an implied multiplication (2+2)*4
                 __apply_precedence_logic(postfix_queue, operators_stack, "*")
-                postfix_queue.append(value)
+            
+            postfix_queue.append(value)
                 
         elif value == "(":
             if previous_value:
@@ -44,14 +47,14 @@ def __convert_infix_to_postfix(infix_expression: str):
             if previous_value in ["+", "-"]:
               # Means the -1 or +1 is implied on bracket
               postfix_queue.append("1")
-                    
+              
             operators_stack.append(value)
-            
+                                
         elif value == ")":
             if not operators_stack:
                 raise ValueError("Attempted to close a bracket but there is no pairing open bracket since there are no other operators")
             
-            while operators_stack and not operators_stack[0] == "(":
+            while operators_stack and operators_stack[-1] != "(":
                 # Pop everything off stack until opening bracket is found
                 operator_from_stack = operators_stack.pop()
                 postfix_queue.append(operator_from_stack)
@@ -61,14 +64,15 @@ def __convert_infix_to_postfix(infix_expression: str):
             
             # Remove open bracket "("
             operators_stack.pop()
-                    
-        if not previous_value.isdecimal() and previous_value != ")":
-            # If the previous result is blank or not a number then non binary operation.
-            # This does not include ')' since (2+2)*5 is valid.
-           raise ValueError("Non binary operation.")
-                   
+            
         
-        __apply_precedence_logic(postfix_queue, operators_stack, value)        
+        elif value_is_an_operator:
+            if previous_value and not previous_value.isdecimal() and previous_value != ")":
+                # If the previous result is blank or not a number then non binary operation.
+                # This does not include ')' since (2+2)*5 is valid.
+                raise ValueError("Non binary operation.")
+                                
+            __apply_precedence_logic(postfix_queue, operators_stack, value)      
                 
         previous_value = value
     
@@ -80,23 +84,23 @@ def __convert_infix_to_postfix(infix_expression: str):
         operator_from_stack = operators_stack.pop()
         postfix_queue.append(operator_from_stack)
     
-    return "".join(postfix_queue)
+    return "".join(postfix_queue) # expecting 23+4^ from (2+3)^4"
     
 def __apply_precedence_logic(postfix_queue: deque, operators_stack: deque, operator: str) -> None:
     if not operators_stack:
         operators_stack.append(operator)
         return 
     
-    if get_weight(operator) > get_weight(operators_stack[0]):
+    if get_weight(operator) > get_weight(operators_stack[-1]):
         operators_stack.append(operator)
         return 
     
-    while operators_stack and (get_weight(operator) <= get_weight(operators_stack[0])) and operators_stack[0] != "(":
+    while operators_stack and (get_weight(operator) <= get_weight(operators_stack[-1])) and operators_stack[-1] != "(":
         operator_from_stack = operators_stack.pop()
         postfix_queue.append(operator_from_stack)
         
     
-    operator_from_stack.append(operator)
+    operators_stack.append(operator)
 
 
     

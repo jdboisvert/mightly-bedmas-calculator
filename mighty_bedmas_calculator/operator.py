@@ -9,7 +9,7 @@ class OperatorWeight(IntEnum):
 
 
 def is_operator(value: str) -> bool:
-    return value in ["+", "-", "*", "/", "(", ")"]
+    return value in ["+", "-", "*", "/", "(", ")", "^"]
 
 def get_weight(operator: str) -> int:
     if not is_operator(operator):
