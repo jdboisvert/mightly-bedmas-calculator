@@ -1,11 +1,14 @@
 from collections import deque
+from decimal import Decimal
 from multiprocessing.sharedctypes import Value
 
 from mighty_bedmas_calculator.operator import get_weight, is_operator
 
 def evaluate(infix_expression: str) -> str:
     postfix_expression = __convert_infix_to_postfix(infix_expression)
-    return postfix_expression
+    result = __evaluate_postfix_expression(postfix_expression)
+    
+    return result
 
 def __convert_infix_to_postfix(infix_expression: str):
     last_character = infix_expression[-1]
@@ -101,6 +104,58 @@ def __apply_precedence_logic(postfix_queue: deque, operators_stack: deque, opera
         
     
     operators_stack.append(operator)
+    
+    
+def __evaluate_postfix_expression(postfix_expression: str) -> str:
+        # Deque<Double> operands = new ArrayDeque<>();
+        operands_stack = deque()
+        
+        for value in postfix_expression:
+            __perform_evaluation_step(operands_stack, value)
+            
+        if len(operands_stack) != 1:
+            raise ValueError("Result contains more than one value")
+        
+        return operands_stack.pop()
+    
+    
+def __perform_evaluation_step(operands_stack: deque, value: str) -> None:
+        if not value.isdecimal():
+            # An operator 
+            right_operand = operands_stack.pop()
+            left_operand = operands_stack.pop()
+            
+            result = __evaluate_operands(left_operand, right_operand, operator=value)
+            operands_stack.append(result)
+            return
+        
+        operands_stack.append(value)
+        
+        
+def __evaluate_operands(left_operand: str, right_operand: str, operator: str) -> str:
+        if right_operand == "0" and operator == "/":
+            raise ValueError("Attempting to divide by 0")
+        
+        left_operand_decimal = Decimal(left_operand)
+        right_operand_decimal = Decimal(right_operand)
+        
+        if operator == "+":
+            return str(left_operand_decimal + right_operand_decimal)
+        
+        if operator == "-":
+            return str(left_operand_decimal - right_operand_decimal)
+        
+        if operator == "*":
+            return str(left_operand_decimal * right_operand_decimal)
+        
+        if operator == "/":
+            return str(left_operand_decimal / right_operand_decimal)
+        
+        if operator == "^":
+            return str(left_operand_decimal ** right_operand_decimal)
+
+
+
 
 
     
