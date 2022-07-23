@@ -33,3 +33,10 @@ def test_evaluate_exponent():
     assert evaluate("2^2")  == "4"
     assert evaluate("(10^5)")   == "100000"
     assert evaluate("(-1^5)")   == "-1"
+    
+def test_evaluate_brackets():
+    assert evaluate("(2*2)(2*2)")  == "16"
+    assert evaluate("3(2*2)(2*2)")  == "48"
+    assert evaluate("-5(2*2)(2*2)")  == "-80"
+    assert evaluate("-5(2*2)(2*2)3")  == "-240"
+    assert evaluate("-5*(2*2)(2*2)*3")  == "-240"

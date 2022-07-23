@@ -41,6 +41,10 @@ def __convert_infix_to_postfix(infix_expression: str):
             postfix_queue.append(value)
                 
         elif value == "(":
+            if previous_value.isdecimal():
+                # Adding delimeter to indicate value is complete 
+                postfix_queue.append(DELIMETER)
+                
             if previous_value:
                 if previous_value == ")" or previous_value.isdecimal():
                     __apply_precedence_logic(postfix_queue, operators_stack, "*")
@@ -113,6 +117,9 @@ def __evaluate_postfix_expression(postfix_expression: str) -> str:
         operand_stack = deque()
 
         for value in postfix_expression:
+            if not value:
+                continue 
+            
             if value.isdecimal():
                 operand_stack.append(value)
                 continue 
@@ -124,9 +131,10 @@ def __evaluate_postfix_expression(postfix_expression: str) -> str:
                 operand_stack = deque()
                 continue 
             
-            operand = "".join(operand_stack)
-            __perform_evaluation_step(operands_stack, operand)
-            operand_stack = deque()
+            if operand_stack:
+                operand = "".join(operand_stack)
+                __perform_evaluation_step(operands_stack, operand)
+                operand_stack = deque()
             
             # Operator
             __perform_evaluation_step(operands_stack, value)
@@ -140,6 +148,19 @@ def __evaluate_postfix_expression(postfix_expression: str) -> str:
 def __perform_evaluation_step(operands_stack: deque, value: str) -> None:
         if not value.isdecimal():
             # An operator 
+            if len(operands_stack) == 1 and value in ["-", "+"]:
+                operand = Decimal(operands_stack.pop())
+                
+                if value == "-":
+                    operands_stack.append(str(operand * Decimal("-1")))
+                    return 
+                    
+                if value == "+":
+                    # A number times itself is positive
+                    operands_stack.append(str(operand))
+                    
+                
+                
             right_operand = operands_stack.pop()
             left_operand = operands_stack.pop()
             
