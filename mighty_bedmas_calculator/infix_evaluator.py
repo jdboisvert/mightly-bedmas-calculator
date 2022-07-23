@@ -4,6 +4,8 @@ from multiprocessing.sharedctypes import Value
 
 from mighty_bedmas_calculator.operator import get_weight, is_operator
 
+DELIMETER = "|"
+
 def evaluate(infix_expression: str) -> str:
     postfix_expression = __convert_infix_to_postfix(infix_expression)
     result = __evaluate_postfix_expression(postfix_expression)
@@ -32,10 +34,6 @@ def __convert_infix_to_postfix(infix_expression: str):
             raise ValueError(f"{value} in expression is not valid")
         
         if value_is_numeric:
-            if previous_value.isdecimal():
-                # TODO validate
-                raise ValueError("Previous value was numeric therefore a binary expression")
-            
             if previous_value == ")":
                 # Check if it is (2+2)4 which means an implied multiplication (2+2)*4
                 __apply_precedence_logic(postfix_queue, operators_stack, "*")
@@ -70,10 +68,14 @@ def __convert_infix_to_postfix(infix_expression: str):
             
         
         elif value_is_an_operator:
-            if previous_value and not previous_value.isdecimal() and previous_value != ")":
+            if previous_value and not previous_value.isdecimal() and previous_value not in ["(", ")"]:
                 # If the previous result is blank or not a number then non binary operation.
-                # This does not include ')' since (2+2)*5 is valid.
+                # This does not include '(' and ')' since (2+2)*5 is valid.
                 raise ValueError("Non binary operation.")
+            
+            if previous_value.isdecimal():
+                # Adding delimeter to indicate value is complete 
+                postfix_queue.append(DELIMETER)
                                 
             __apply_precedence_logic(postfix_queue, operators_stack, value)      
                 
@@ -107,10 +109,26 @@ def __apply_precedence_logic(postfix_queue: deque, operators_stack: deque, opera
     
     
 def __evaluate_postfix_expression(postfix_expression: str) -> str:
-        # Deque<Double> operands = new ArrayDeque<>();
         operands_stack = deque()
-        
+        operand_stack = deque()
+
         for value in postfix_expression:
+            if value.isdecimal():
+                operand_stack.append(value)
+                continue 
+            
+            if value == DELIMETER:
+                # Now we are sure to know the operand evaluate 
+                operand = "".join(operand_stack)
+                __perform_evaluation_step(operands_stack, operand)
+                operand_stack = deque()
+                continue 
+            
+            operand = "".join(operand_stack)
+            __perform_evaluation_step(operands_stack, operand)
+            operand_stack = deque()
+            
+            # Operator
             __perform_evaluation_step(operands_stack, value)
             
         if len(operands_stack) != 1:
