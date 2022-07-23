@@ -40,3 +40,7 @@ def test_evaluate_brackets():
     assert evaluate("-5(2*2)(2*2)")  == "-80"
     assert evaluate("-5(2*2)(2*2)3")  == "-240"
     assert evaluate("-5*(2*2)(2*2)*3")  == "-240"
+    assert evaluate("-5*(22*2)(2*33)*3")  == "-43560"    
+    
+def test_evaluate_all_operators():
+    assert evaluate("5(2*2)(2*2)3-6^2")  == "204"

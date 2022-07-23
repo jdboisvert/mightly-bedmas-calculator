@@ -41,11 +41,11 @@ def __convert_infix_to_postfix(infix_expression: str):
             postfix_queue.append(value)
                 
         elif value == "(":
-            if previous_value.isdecimal():
-                # Adding delimeter to indicate value is complete 
-                postfix_queue.append(DELIMETER)
-                
             if previous_value:
+                if previous_value.isdecimal():
+                    # Adding delimeter to indicate value is complete 
+                    postfix_queue.append(DELIMETER)
+                
                 if previous_value == ")" or previous_value.isdecimal():
                     __apply_precedence_logic(postfix_queue, operators_stack, "*")
                     
@@ -93,7 +93,7 @@ def __convert_infix_to_postfix(infix_expression: str):
         operator_from_stack = operators_stack.pop()
         postfix_queue.append(operator_from_stack)
     
-    return "".join(postfix_queue) # expecting 23+4^ from (2+3)^4"
+    return "".join(postfix_queue) # expecting 23+4^ from (2+3)^4
     
 def __apply_precedence_logic(postfix_queue: deque, operators_stack: deque, operator: str) -> None:
     if not operators_stack:
