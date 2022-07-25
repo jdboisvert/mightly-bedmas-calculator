@@ -9,7 +9,7 @@ line-length = 140
 
 # Docs: https://gitlab.com/mbarkhau/pycalver
 [bumpver]
-current_version = "2022.7.25.0"
+current_version = "2022.7.25.1"
 version_pattern = "YYYY.MM.DD.INC0"
 commit_message = "[RELEASE] {new_version}"
 commit = true
