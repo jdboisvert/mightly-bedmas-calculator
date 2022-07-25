@@ -3,6 +3,7 @@
 
 """Tests for `infix_evaluator` package."""
 
+import pytest
 from mighty_bedmas_calculator.infix_evaluator import evaluate
 
 
@@ -44,3 +45,47 @@ def test_evaluate_brackets():
     
 def test_evaluate_all_operators():
     assert evaluate("5(2*2)(2*2)3-6^2")  == "204"
+    assert evaluate("5(2*2)(2*2)+3-6^2")  == "47"
+    assert evaluate("5+(2*2)(2*2)+3-6^2")  == "-12"
+    assert evaluate("5(2*2)+(2*2)3-6^2")  == "-4"
+    assert evaluate("-(2*2)-(3^2-3)/4")  == "-5.5"
+    
+def test_evaluate_fractions():
+    assert evaluate("1/3")  == "0.3333333333333333333333333333"
+    assert evaluate("(1/3)*2")  == "0.6666666666666666666666666666"
+    
+    
+def test_no_closing_bracket_raise_error():
+    with pytest.raises(ValueError):
+        evaluate("(1/3")
+        
+def test_no_opening_bracket_raise_error():
+    with pytest.raises(ValueError):
+        evaluate("1+3)")
+        
+def test_divide_by_zero():
+    with pytest.raises(ValueError):
+        evaluate("1/0")
+        
+def test_non_binary_expressions():
+    with pytest.raises(ValueError):
+        evaluate("--1")
+        
+    with pytest.raises(ValueError):
+        evaluate("2+")
+        
+    with pytest.raises(ValueError):
+        evaluate("6/")
+        
+    with pytest.raises(ValueError):
+        evaluate("6*")
+        
+    with pytest.raises(ValueError):
+        evaluate("(6+5)*5/")
+        
+    with pytest.raises(ValueError):
+        evaluate("5+5/+2")
+        
+def test_non_operators():
+    with pytest.raises(ValueError):
+        evaluate("1#1")

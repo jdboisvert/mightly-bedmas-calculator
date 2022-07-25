@@ -48,10 +48,6 @@ def __convert_infix_to_postfix(infix_expression: str):
                 
                 if previous_value == ")" or previous_value.isdecimal():
                     __apply_precedence_logic(postfix_queue, operators_stack, "*")
-                    
-            if previous_value in ["+", "-"]:
-              # Means the -1 or +1 is implied on bracket
-              postfix_queue.append("1")
               
             operators_stack.append(value)
                                 
