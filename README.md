@@ -1,4 +1,4 @@
-# The Might BEDMAS Calculator v2022.7.19.0
+# The Might BEDMAS Calculator v2022.7.25.0
 A package to calculate infix expressions following BEDMAS. 
 
 ## Features
