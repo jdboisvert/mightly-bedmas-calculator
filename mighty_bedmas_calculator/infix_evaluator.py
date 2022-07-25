@@ -89,7 +89,7 @@ def __convert_infix_to_postfix(infix_expression: str):
         operator_from_stack = operators_stack.pop()
         postfix_queue.append(operator_from_stack)
     
-    return "".join(postfix_queue) # expecting 23+4^ from (2+3)^4
+    return "".join(postfix_queue)
     
 def __apply_precedence_logic(postfix_queue: deque, operators_stack: deque, operator: str) -> None:
     if not operators_stack:

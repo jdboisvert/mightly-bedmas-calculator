@@ -3,11 +3,14 @@ A package to calculate infix expressions following BEDMAS.
 
 ## Features
 
-* Add 
-* Subtract
-* Multiply
-* Divide
-* Just about another any calculator does :) 
+This will calculate an expression following thr BEDMAS order of operations and the following operators are supported:
+
+* Add +
+* Subtract -
+* Multiply *
+* Divide /
+* Power of ^
+* Brakcets ()
 
 ## Usage via the command line
 
