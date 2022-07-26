@@ -49,6 +49,11 @@ def test_evaluate_brackets():
     assert evaluate("-5*(22*2)(2*33)*3") == "-43560"
 
 
+def test_evaluate_decimals():
+    assert evaluate("10000000/2*5+6.5") == "25000006.5"
+    assert evaluate("5*5.33/5.4+5-1(8.01+8)/2") == "1.930185185185185185185185185"
+
+
 def test_evaluate_all_operators():
     assert evaluate("5(2*2)(2*2)3-6^2") == "204"
     assert evaluate("5(2*2)(2*2)+3-6^2") == "47"

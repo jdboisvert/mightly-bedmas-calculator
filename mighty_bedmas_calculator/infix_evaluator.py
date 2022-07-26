@@ -32,7 +32,7 @@ def __convert_infix_to_postfix(infix_expression: str):
         value_is_numeric = value.isdecimal()
         value_is_an_operator = is_operator(value)
 
-        if not value_is_numeric and not value_is_an_operator:
+        if not value_is_numeric and not value_is_an_operator and value != ".":
             raise ValueError(f"{value} in expression is not valid")
 
         if value_is_numeric:
@@ -40,6 +40,10 @@ def __convert_infix_to_postfix(infix_expression: str):
                 # Check if it is (2+2)4 which means an implied multiplication (2+2)*4
                 __apply_precedence_logic(postfix_queue, operators_stack, "*")
 
+            postfix_queue.append(value)
+
+        elif value == "." and previous_value.isdecimal():
+            # Means it is a decimal
             postfix_queue.append(value)
 
         elif value == "(":
@@ -116,7 +120,7 @@ def __evaluate_postfix_expression(postfix_expression: str) -> str:
         if not value:
             continue
 
-        if value.isdecimal():
+        if value.isdecimal() or value == ".":
             operand_stack.append(value)
             continue
 
@@ -142,8 +146,7 @@ def __evaluate_postfix_expression(postfix_expression: str) -> str:
 
 
 def __perform_evaluation_step(operands_stack: deque, value: str) -> None:
-    if not value.isdecimal():
-        # An operator
+    if is_operator(value):
         if len(operands_stack) == 1 and value in ["-", "+"]:
             operand = Decimal(operands_stack.pop())
 
