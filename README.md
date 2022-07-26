@@ -1,4 +1,4 @@
-# The Might BEDMAS Calculator v2022.7.25.1
+# The Might BEDMAS Calculator v2022.7.26.1
 A package to calculate infix expressions following BEDMAS.
 
 ## Features
@@ -16,8 +16,8 @@ This will calculate an expression following the BEDMAS order of operations and t
 ### From GitHub
 ❯ pip install git+ssh://git@github.com/jdboisvert/mightly-bedmas-calculator
 
-From [PyPi](https://pypi.org/project/mighty-bedmas-calculator/2022.7.26.0/#description)
-❯ pip install mighty-bedmas-calculator==2022.7.26.0
+From [PyPi](https://pypi.org/project/mighty-bedmas-calculator/2022.7.26.1/#description)
+❯ pip install mighty-bedmas-calculator==2022.7.26.1
 
 ## Usage via the command line
 
