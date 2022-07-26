@@ -6,7 +6,7 @@ from pathlib import Path
 from setuptools import find_packages, setup
 
 GITHUB_URL = "https://github.com/jdboisvert/mightly-bedmas-calculator"
-VERSION = "2022.7.19.0"
+VERSION = "2022.7.26.0"
 
 
 def read(fname):
