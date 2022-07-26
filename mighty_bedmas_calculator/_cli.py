@@ -13,6 +13,7 @@ from mighty_bedmas_calculator.infix_evaluator import evaluate
 def cli():
     pass
 
+
 @cli.command()
 @click.argument("expression")
 def calculate(expression: str) -> str:

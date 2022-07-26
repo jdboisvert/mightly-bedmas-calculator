@@ -6,7 +6,4 @@ __email__ = "info.jeffreyboisvert@gmail.com"
 from . import infix_evaluator
 from . import operator
 
-__all__ = [
-    "infix_evaluator",
-    "operator"
-]
+__all__ = ["infix_evaluator", "operator"]

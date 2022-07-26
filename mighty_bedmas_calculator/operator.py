@@ -1,7 +1,7 @@
 from enum import IntEnum
 
 
-class OperatorWeight(IntEnum):    
+class OperatorWeight(IntEnum):
     BRACKET_WEIGHT = 4
     EXPONENT_WEIGHT = 3
     DIVISION_MULTIPLICATION_WEIGHT = 2
@@ -11,10 +11,11 @@ class OperatorWeight(IntEnum):
 def is_operator(value: str) -> bool:
     return value in ["+", "-", "*", "/", "(", ")", "^"]
 
+
 def get_weight(operator: str) -> int:
     if not is_operator(operator):
         raise ValueError(f"{operator} is not an operator")
-    
+
     weights = {
         "(": OperatorWeight.BRACKET_WEIGHT.value,
         ")": OperatorWeight.BRACKET_WEIGHT.value,
@@ -22,8 +23,7 @@ def get_weight(operator: str) -> int:
         "/": OperatorWeight.DIVISION_MULTIPLICATION_WEIGHT.value,
         "*": OperatorWeight.DIVISION_MULTIPLICATION_WEIGHT.value,
         "+": OperatorWeight.ADDITION_SUBTRACTION_WEIGHT.value,
-        "-": OperatorWeight.ADDITION_SUBTRACTION_WEIGHT.value
+        "-": OperatorWeight.ADDITION_SUBTRACTION_WEIGHT.value,
     }
-    
-    return weights[operator]
 
+    return weights[operator]

@@ -1,5 +1,5 @@
 # The Might BEDMAS Calculator v2022.7.25.1
-A package to calculate infix expressions following BEDMAS. 
+A package to calculate infix expressions following BEDMAS.
 
 ## Features
 
@@ -24,7 +24,7 @@ This will calculate an expression following thr BEDMAS order of operations and t
 
     ❯ mighty-bedmas-calculator calculate "(2+3)^4"
     625
-    
+
 
 ## Development
 
@@ -50,4 +50,3 @@ If one of the hooks changes a file, you will need to `git add` that file and re-
 
     # just the unit tests with a matching prefix
     pytest -k test_some_function
-
